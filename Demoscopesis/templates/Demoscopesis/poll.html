@@ -1,0 +1,80 @@
+{% extends '_base.html' %} 
+{% load static %} 
+
+{% block body %}
+<div id="wrapper">
+
+    {% include '_sidebar.html' %}
+
+    {% include '_navbar.html' %}  
+    
+    {% if poll.PL_ENDDT > nowdt %}
+    <form action="{% url 'Demoscopesis:vote' poll.id %}" method="post">
+        <div id="page-content-wrapper">
+            <div class="container">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h4>Created by: {{ poll.USER }}
+                            <span></span> on: {{ poll.PL_STARTDT }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title">{{ poll.PL_TITLE }}</h1>
+                        <h3>Subtitle</h3>
+                        <p class="card-text">{{ poll.PL_BODY }}</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        {% csrf_token %} {% for choice in poll.PChoice.all %}
+                        <button type="submit" name="choice" class="btn btn-outline-primary" value="{{ choice.id }}">{{ choice.PC_CHOICE }}</button>
+                        {% endfor %}
+                        <a class="btn btn-danger" href="/demoscopesis" role="button">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% else %}
+
+    <div id="page-content-wrapper">
+        <div class="container">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Results</h4>
+                </div>
+                <div class="card-body">
+                    {% for choice in poll.PChoice.all %}
+                    <h4>{{ choice.PC_CHOICE }}</h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer text-center">
+                    <h4>Total number of voters:
+                        <span class="text-danger">50</span>
+                    </h4>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h4>Created by: {{ poll.USER }}
+                        <span></span>, on {{ poll.PL_STARTDT }}</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title">{{ poll.PL_TITLE }}</h1>
+                    <p class="card-text">{{ poll.PL_BODY }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 
+
+{% block scripts %}
+<script src="{% static "js/jquery-3.3.1.min.js"%}"></script>
+<script src="{% static "js/jquery.formset.min.js"%}"></script>
+<script src="{% static "js/bootstrap.bundle.min.js"%}"></script>
+<script src="{% static "js/sidebar.js"%}"></script>
+{% endblock %}

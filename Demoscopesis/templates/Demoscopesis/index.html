@@ -1,0 +1,66 @@
+{% extends '_base.html' %} 
+{% load static %} 
+
+{% block body %}
+<div id="wrapper">
+
+    {% include '_sidebar.html' %}
+
+    {% include '_navbar.html' %} 
+
+    <div id="page-content-wrapper">
+        {% if messages %} 
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>
+                    <p>{{ message }}</p>
+                </strong>
+            </div>
+            {% endfor %} 
+        {% endif %}
+
+        <div class="container">
+            {% if latest_poll_list %}
+            <div class="card-columns">
+                {% for poll in latest_poll_list %}
+                <a href="/demoscopesis/{{ poll.id }}/">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ poll.PL_TITLE }}</h5>
+                            <p class="text-dark">{{ poll.PL_SHRBODY }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Created by: {{ poll.USER }}</small>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="container">
+                <div class="jumbotron">
+                    <h1 class="display-3">No polls were found.</h1>
+                    <p class="lead">No polls were submitted so far.</p>
+                    <hr class="my-4">
+                    <p>Try visiting another section or add a poll yourself.</p>
+                    <p class="lead">
+                        <a class="btn btn-primary btn-lg" href="/demoscopesis/create/" role="button">Add a poll</a>
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
+
+
+{% block scripts %}
+<script src="{% static "js/jquery-3.3.1.min.js"%}"></script>
+<script src="{% static "js/jquery.formset.min.js"%}"></script>
+<script src="{% static "js/bootstrap.bundle.min.js"%}"></script>
+<script src="{% static "js/sidebar.js"%}"></script>
+{% endblock %}
