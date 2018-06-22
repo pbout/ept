@@ -1,1 +1,1 @@
-web: gunicorn Epitome.wsgi --log-file -
+web: gunicorn Epitome.wsgi -b 0.0.0.0:$PORT
