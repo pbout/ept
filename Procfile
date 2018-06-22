@@ -1,1 +1,1 @@
-web: gunicorn ept.wsgi --log-file -
+web: gunicorn Epitome.wsgi --log-file -
